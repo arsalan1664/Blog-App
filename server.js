@@ -4,7 +4,8 @@ const dotenv = require("dotenv")
 const colors = require("colors")
 const morgan = require("morgan")
 const connectDB = require("./config/db")
-const router = require("./routes/userRoute")
+const userRoute = require("./routes/userRoute")
+const blogRoute = require("./routes/blogRoute")
 
 
 // dotenv
@@ -16,8 +17,6 @@ connectDB()
 // rest object
 const app = express()
 
-// route
-
 
 // midddlewares
 app.use(cors())
@@ -26,7 +25,8 @@ app.use(morgan('tiny'))
 
 
 // route
-app.use('/api/v1/user', router)
+app.use('/api/v1/user', userRoute)
+app.use('/api/v1/blog', blogRoute)
 
 // port
 const PORT = process.env.PORT || 8080
