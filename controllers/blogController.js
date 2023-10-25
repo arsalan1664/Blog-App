@@ -1,6 +1,4 @@
-const {
-    default: mongoose
-} = require("mongoose");
+const mongoose = require("mongoose");
 const blogModel = require("../models/blogModel");
 const userModel = require("../models/userModel");
 
