@@ -1,4 +1,8 @@
+const {
+    default: mongoose
+} = require("mongoose");
 const blogModel = require("../models/blogModel");
+const userModel = require("../models/userModel");
 
 exports.getAllBlogController = async (req, res) => {
     try {
@@ -31,11 +35,19 @@ exports.createBlogController = async (req, res) => {
         const {
             title,
             descryption,
-            image
+            image,
+            user
         } = req.body
-        if (!title || !descryption || !image) {
+        if (!title || !descryption || !image || !user) {
             return res.status(400).send({
                 message: 'please fill all fields',
+                success: false
+            })
+        }
+        const existingUser = await userModel.findById(user)
+        if (! existingUser) {
+            return res.status(404).send({
+                message: "User not Found",
                 success: false
             })
         }
@@ -44,6 +56,16 @@ exports.createBlogController = async (req, res) => {
             descryption,
             image
         })
+        const session = await mongoose.startSession()
+        session.startTransaction()
+        await newBlog.save({
+            session
+        })
+        existingUser.blogs.push(newBlog)
+        await existingUser.save({
+            session
+        })
+        await session.commitTransaction()
         await newBlog.save()
         return res.status(200).send({
             message: 'New Blog Created',
@@ -122,7 +144,9 @@ exports.deleteBlogController = async (req, res) => {
         const {
             id
         } = req.params
-        const blog = await blogModel.findByIdAndDelete(id)
+        const blog = await blogModel.findByIdAndDelete(id).populate()
+        await blog.user.blogs.pull(blog)
+        await blog.user.save
         if (! blog) {
             return res.status(400).send({
                 message: 'blog not found',
@@ -137,6 +161,30 @@ exports.deleteBlogController = async (req, res) => {
         console.log(error);
         return res.status(500).send({
             message: 'Problem in controllers',
+            success: false,
+            error
+        })
+    }
+}
+
+exports.getUserBlogController = async (req, res) => {
+    try {
+        const userBlog = await userModel.findById(req.params.id).populate('blogs')
+        if (! userBlog) {
+            return res.status(400).send({
+                message: 'blog not found with this id',
+                success: false
+            })
+        }
+        return res.status(200).send({
+            message: 'User blog',
+            success: true,
+            userBlog
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            message: 'controller problem',
             success: false,
             error
         })

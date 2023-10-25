@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const userModel = require('./userModel')
 
 const blogSchema = new mongoose.Schema({
     title: {
@@ -21,6 +22,11 @@ const blogSchema = new mongoose.Schema({
             true,
             'Please provide image of blog'
         ]
+    },
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: "Blog-users",
+        require: true
     }
 }, {
     timestamps: true

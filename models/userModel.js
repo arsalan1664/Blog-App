@@ -21,7 +21,13 @@ const userSchema = new mongoose.Schema({
             true,
             'passward is required'
         ]
-    }
+    },
+    blogs: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'Blog-Model'
+        }
+    ]
 }, {
     timestamps: true
 })
