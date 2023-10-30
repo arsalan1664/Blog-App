@@ -7,7 +7,6 @@ const store = configureStore({
   reducer:{
     authSlice: authSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
-
   }
   ,
   middleware: (getDefaultMiddleware) =>

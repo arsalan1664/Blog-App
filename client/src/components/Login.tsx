@@ -28,6 +28,9 @@ import {
     CardContent,
 } from "./ui/card"
 import { usePostLoginMutation } from "@/features/apiSlice"
+import { useDispatch } from "react-redux"
+import { authActions } from "@/features/AuthSlice"
+import { useNavigate } from "react-router-dom"
 
 const formSchema = z.object({
     email: z.string().email(),
@@ -40,6 +43,8 @@ export function Login() {
 // const {data} = useGetUserQuery('');
 // console.log(data);
 
+    const dispatch = useDispatch()
+
 
     const form = useForm < z.infer < typeof formSchema >> ({
         resolver: zodResolver(formSchema),
@@ -51,12 +56,16 @@ export function Login() {
 
     // 2. Define a submit handler.
     const [postUser] = usePostLoginMutation()
+    const navigate = useNavigate()
 
     
 
      function onSubmit (values : z.infer < typeof formSchema >) {
         try {
              postUser(values)
+             dispatch(authActions.login())
+             alert('Login Successful')
+             navigate("/")
             console.log(values)
         } catch (error) {
             console.log(error);   

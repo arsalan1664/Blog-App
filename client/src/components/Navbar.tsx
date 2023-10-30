@@ -8,11 +8,10 @@ import {
     Link
 } from "react-router-dom"
 import {
+    useDispatch,
     useSelector
 } from 'react-redux'
-import {
-    RootState
-} from "@/Store";
+
 import {
     Menu,
     Power
@@ -26,12 +25,22 @@ import {
 import {
     Card
 } from "./ui/card";
+import { RootState } from "@/Store";
+import { authActions } from "@/features/AuthSlice";
+
+
 
 
 function Navbar() {
-    const userLogin: boolean = useSelector((state : RootState) => state.isLogin);
+    const userLogin = useSelector((state: RootState) => state.authSlice);;
+    const dispatch = useDispatch()
+    
+    const handleLogout = () => {
+        dispatch(authActions.logout());
+    };
+    
+    
     console.log(userLogin);
-
     return (
         <nav className="absolute top-0 flex items-center justify-center h-[7%] w-full bg-background text-foreground border-b ">
             <div className="flex items-center justify-between h-[70%] w-[95%] ">
@@ -62,7 +71,7 @@ function Navbar() {
                             <Button variant={'outline'}>
                                 <Link to={'/my-blog'}>My Blog</Link>
                             </Button>
-                            <Button variant={'outline'}>
+                            <Button onClick={handleLogout} variant={'outline'}>
                                 <Link to={"/login"}><Power size={16}/></Link>
                             </Button>
                         </>
