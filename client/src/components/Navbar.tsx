@@ -32,11 +32,12 @@ import { authActions } from "@/features/AuthSlice";
 
 
 function Navbar() {
-    const userLogin = useSelector((state: RootState) => state.authSlice);;
+    const userLogin = useSelector((state: RootState) => state.authSlice.isLogin);;
     const dispatch = useDispatch()
     
     const handleLogout = () => {
         dispatch(authActions.logout());
+        alert("Login Successful")
     };
     
     
