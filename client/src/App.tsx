@@ -9,6 +9,7 @@ import {
     Login
 } from "./components/Login";
 import MyBlog from "./components/MyBlog";
+import Footer from "./components/Footer";
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
                 <Route path='/my-blog'
                     element={<MyBlog/>}/>
             </Routes>
+            <Footer/>
         </div>
     )
 }

@@ -43,9 +43,9 @@ function Navbar() {
     
     console.log(userLogin);
     return (
-        <nav className="absolute top-0 flex items-center justify-center h-[7%] w-full bg-background text-foreground border-b ">
+        <nav className="flex items-center justify-center h-[10%] w-full bg-background text-foreground border-b ">
             <div className="flex items-center justify-between h-[70%] w-[95%] ">
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-gray-300">
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-widest">
                     <Link to={"/"}>Blog App</Link>
                 </h3>
 
